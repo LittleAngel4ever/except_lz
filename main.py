@@ -1,8 +1,7 @@
-# from diagramma import Grafic
-# from log import proga
+import exception as ex
 
-# if __name__ == "__main__":
-#     treygolnik = Grafic("personal_transactions.csv")
-#     treygolnik.diagramma()
-#     proga()
+def main():
+     ex.main()
 
+if __name__ == "__main__":
+    main()

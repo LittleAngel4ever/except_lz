@@ -1,13 +1,15 @@
 import pandas as pd
 
 class DataFrameStructureError(Exception):
-    print("Wrong structure of DataFrame")
+    pass
+
+class DataFrameTypeError(Exception):
+    pass
 
 class DataFrame:
-    def __init__(self):
+    def __init__(self, filename):
         try:
-            self.df = pd.read_csv("var7.csv")
-            # print(self.df)
+            self.df = pd.read_csv(filename)
         except FileNotFoundError:
             print("No such file")
         except pd.errors.DataError:
@@ -18,19 +20,26 @@ class DataFrame:
             self.column_list_from_file = self.df.columns.to_list()
             self.df_original = pd.read_csv("var7original.csv")
             self.column_list_main = self.df_original.columns.to_list()
-            # print(self.column_list_from_file)
-            # print(self.column_list_main)
             if self.column_list_from_file != self.column_list_main:
                 raise DataFrameStructureError("Wrong structure")
+        except DataFrameStructureError:        
+            print("Please, remake your columns, we were waiting for", self.column_list_main, ", but you given", self.column_list_from_file)
+        try:
+            self.df_input_types = str(self.df.dtypes)
+            self.df_original_types = str(self.df_original.dtypes)
+            if self.df_input_types != self.df_original_types:
+                raise DataFrameTypeError("Wrong types")
             else:
                 print("Everything alright")
-        except DataFrameStructureError:        
-            print("Please remake your columns, we were waiting for", self.column_list_main, ", but you given", self.column_list_from_file)
+        except:
+            print("Wrong types\n" 
+            "Expected: ", self.df_original_types,
+            "\nInput: ", self.df_input_types)
 
 
-filename = input("Please, enter name of your file: ")
-df = DataFrame()
+def main():
+    filename = input("Please, enter name of your file: ")
+    df = DataFrame(filename)
 
-# str(df['b'].dtype)
-
-df['c'].info()
+if __name__ == "__main__":
+    main()
